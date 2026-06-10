@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}AI Coach · HealthHub{% endblock %}
+{% block content %}
+<div class="max-w-2xl mx-auto">
+  <div class="mb-4">
+    <h1 class="text-2xl font-semibold text-slate-900">AI Coach</h1>
+    <p class="text-sm text-slate-500">
+      Ask about workouts, nutrition, sleep and habits. Medical questions are
+      redirected to a doctor — by design.
+    </p>
+  </div>
+
+  <div class="bg-slate-50 border border-slate-200 rounded-2xl flex flex-col h-[60vh]">
+    <!-- Messages -->
+    <div id="messages" class="flex-1 overflow-y-auto p-4 space-y-3">
+      {% include "coach/_turn.html" %}
+      {% if not messages %}
+        <p class="text-center text-sm text-slate-400 mt-8">
+          Try: “Suggest a beginner full-body routine” or “How much protein should I eat?”
+        </p>
+      {% endif %}
+    </div>
+
+    <!-- Composer -->
+    <form class="border-t border-slate-200 p-3 flex gap-2"
+          hx-post="{% url 'coach:send' conversation.pk %}"
+          hx-target="#messages"
+          hx-swap="beforeend"
+          hx-on::after-request="this.reset(); document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;">
+      {% csrf_token %}
+      <input type="text" name="text" autocomplete="off" required
+             placeholder="Ask your coach…"
+             class="flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none">
+      <button type="submit"
+              class="bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium rounded-lg px-4">
+        Send
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}

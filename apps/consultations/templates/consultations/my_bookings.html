@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}My bookings · HealthHub{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-semibold text-slate-900 mb-6">My bookings</h1>
+
+{% if bookings %}
+<div class="space-y-3 max-w-2xl">
+  {% for b in bookings %}
+  <div class="bg-white border border-slate-200 rounded-2xl p-5 flex items-center justify-between">
+    <div>
+      <p class="font-medium text-slate-900">{{ b.doctor.user.full_name|default:"Doctor" }}</p>
+      <p class="text-sm text-slate-500">{{ b.doctor.specialty }} · {{ b.slot.starts_at|date:"D, M j · H:i" }}</p>
+    </div>
+    <span class="text-xs font-medium px-2.5 py-1 rounded-full
+      {% if b.status == 'confirmed' %}bg-brand-50 text-brand-700
+      {% elif b.status == 'completed' %}bg-slate-100 text-slate-600
+      {% elif b.status == 'cancelled' %}bg-red-50 text-red-600
+      {% else %}bg-amber-50 text-amber-700{% endif %}">
+      {{ b.get_status_display }}
+    </span>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p class="text-slate-400">No bookings yet. <a href="{% url 'consultations:doctor_list' %}" class="text-brand-700 hover:underline">Find a doctor →</a></p>
+{% endif %}
+{% endblock %}

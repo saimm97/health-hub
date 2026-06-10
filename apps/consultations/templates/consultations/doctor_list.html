@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Doctors · HealthHub{% endblock %}
+{% block content %}
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-2xl font-semibold text-slate-900">Find a doctor</h1>
+  <a href="{% url 'consultations:my_bookings' %}" class="text-sm text-brand-700 font-medium hover:underline">My bookings →</a>
+</div>
+
+{% if doctors %}
+<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+  {% for d in doctors %}
+  <a href="{% url 'consultations:doctor_detail' d.pk %}"
+     class="bg-white border border-slate-200 rounded-2xl p-5 hover:border-brand-300 hover:shadow-sm transition">
+    <div class="flex items-center gap-3 mb-3">
+      <span class="w-11 h-11 rounded-full bg-brand-100 text-brand-700 grid place-items-center font-semibold">
+        {{ d.user.full_name|default:d.user.email|slice:":1"|upper }}
+      </span>
+      <div>
+        <p class="font-medium text-slate-900">{{ d.user.full_name|default:"Doctor" }}</p>
+        <p class="text-xs text-slate-500">{{ d.specialty }}</p>
+      </div>
+    </div>
+    <p class="text-sm text-slate-500 line-clamp-2">{{ d.bio|default:"Experienced health professional." }}</p>
+    <p class="mt-3 text-xs text-slate-400">{{ d.years_experience }} yrs experience</p>
+  </a>
+  {% endfor %}
+</div>
+{% else %}
+<p class="text-slate-400">No doctors available right now.</p>
+{% endif %}
+{% endblock %}

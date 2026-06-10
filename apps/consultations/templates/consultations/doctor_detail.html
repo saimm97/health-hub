@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}{{ doctor.user.full_name|default:"Doctor" }} · HealthHub{% endblock %}
+{% block content %}
+<a href="{% url 'consultations:doctor_list' %}" class="text-sm text-slate-500 hover:underline">← All doctors</a>
+
+<div class="bg-white border border-slate-200 rounded-2xl p-6 mt-4 max-w-2xl">
+  <div class="flex items-center gap-4">
+    <span class="w-14 h-14 rounded-full bg-brand-100 text-brand-700 grid place-items-center text-xl font-semibold">
+      {{ doctor.user.full_name|default:doctor.user.email|slice:":1"|upper }}
+    </span>
+    <div>
+      <h1 class="text-xl font-semibold text-slate-900">{{ doctor.user.full_name|default:"Doctor" }}</h1>
+      <p class="text-sm text-slate-500">{{ doctor.specialty }} · {{ doctor.years_experience }} yrs</p>
+    </div>
+  </div>
+  {% if doctor.bio %}<p class="mt-4 text-sm text-slate-600">{{ doctor.bio }}</p>{% endif %}
+
+  <h2 class="font-semibold text-slate-900 mt-6 mb-3">Available slots</h2>
+  {% if slots %}
+    <div class="space-y-2">
+      {% for s in slots %}
+      <form method="post" action="{% url 'consultations:book_slot' s.id %}"
+            class="flex items-center justify-between border border-slate-200 rounded-lg px-4 py-2.5">
+        {% csrf_token %}
+        <span class="text-sm text-slate-700">{{ s.starts_at|date:"D, M j · H:i" }}</span>
+        <button class="text-sm bg-brand-600 hover:bg-brand-700 text-white font-medium rounded-lg px-3 py-1.5">Book</button>
+      </form>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-sm text-slate-400">No open slots right now.</p>
+  {% endif %}
+</div>
+{% endblock %}

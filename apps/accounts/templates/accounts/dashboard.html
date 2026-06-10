@@ -1,28 +1,85 @@
 {% extends "base.html" %}
 {% block title %}Dashboard · HealthHub{% endblock %}
 {% block content %}
-<h1>Welcome{% if user.full_name %}, {{ user.full_name }}{% endif %}</h1>
+<div class="flex items-center justify-between mb-6">
+  <div>
+    <h1 class="text-2xl font-semibold text-slate-900">
+      Welcome{% if user.full_name %}, {{ user.full_name }}{% endif %}
+    </h1>
+    <p class="text-sm text-slate-500">Here's your last 7 days at a glance.</p>
+  </div>
+  <a href="{% url 'coach:home' %}"
+     class="hidden sm:inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium rounded-lg px-4 py-2.5">
+    Ask your AI coach
+  </a>
+</div>
 
-<section>
-    <h2>Your profile</h2>
-    <ul>
-        <li>Role: {{ user.get_role_display }}</li>
-        <li>Age: {{ profile.age|default:"—" }}</li>
-        <li>Activity: {{ profile.get_activity_level_display }}</li>
-        <li>Goal: {{ profile.goal|default:"—" }}</li>
-    </ul>
-</section>
+<!-- Stat cards -->
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+  {% with s=summary %}
+  <div class="bg-white border border-slate-200 rounded-2xl p-5">
+    <p class="text-xs uppercase tracking-wide text-slate-400">Workouts (7d)</p>
+    <p class="mt-1 text-3xl font-semibold text-slate-900">{{ s.workout_sessions }}</p>
+  </div>
+  <div class="bg-white border border-slate-200 rounded-2xl p-5">
+    <p class="text-xs uppercase tracking-wide text-slate-400">Latest weight</p>
+    <p class="mt-1 text-3xl font-semibold text-slate-900">{{ s.latest_weight_kg|default:"—" }}<span class="text-base text-slate-400"> kg</span></p>
+  </div>
+  <div class="bg-white border border-slate-200 rounded-2xl p-5">
+    <p class="text-xs uppercase tracking-wide text-slate-400">Avg reps</p>
+    <p class="mt-1 text-3xl font-semibold text-slate-900">{{ s.avg_reps|floatformat:0|default:"—" }}</p>
+  </div>
+  <div class="bg-white border border-slate-200 rounded-2xl p-5">
+    <p class="text-xs uppercase tracking-wide text-slate-400">Goal</p>
+    <p class="mt-1 text-lg font-medium text-slate-900 truncate">{{ profile.goal|default:"Set a goal" }}</p>
+  </div>
+  {% endwith %}
+</div>
 
-<section>
-    <h2>Recent health history</h2>
-    {% if history %}
-        <ul>
-        {% for entry in history %}
-            <li>{{ entry.get_kind_display }}: {{ entry.summary }}</li>
+<div class="grid lg:grid-cols-3 gap-6">
+  <!-- Profile -->
+  <div class="bg-white border border-slate-200 rounded-2xl p-6">
+    <h2 class="font-semibold text-slate-900 mb-4">Your profile</h2>
+    <dl class="space-y-3 text-sm">
+      <div class="flex justify-between"><dt class="text-slate-500">Role</dt><dd class="font-medium">{{ user.get_role_display }}</dd></div>
+      <div class="flex justify-between"><dt class="text-slate-500">Age</dt><dd class="font-medium">{{ profile.age|default:"—" }}</dd></div>
+      <div class="flex justify-between"><dt class="text-slate-500">Activity</dt><dd class="font-medium">{{ profile.get_activity_level_display }}</dd></div>
+      <div class="flex justify-between"><dt class="text-slate-500">Height</dt><dd class="font-medium">{{ profile.height_cm|default:"—" }} cm</dd></div>
+    </dl>
+  </div>
+
+  <!-- Recent readings -->
+  <div class="bg-white border border-slate-200 rounded-2xl p-6">
+    <h2 class="font-semibold text-slate-900 mb-4">Recent readings</h2>
+    {% if recent_readings %}
+      <ul class="space-y-2 text-sm">
+        {% for r in recent_readings %}
+        <li class="flex justify-between border-b border-slate-100 pb-2">
+          <span class="text-slate-500">{{ r.get_metric_display }}</span>
+          <span class="font-medium">{{ r.value }}</span>
+        </li>
         {% endfor %}
-        </ul>
+      </ul>
     {% else %}
-        <p>No history recorded yet.</p>
+      <p class="text-sm text-slate-400">No readings yet. Log one from the Fitness page.</p>
     {% endif %}
-</section>
+  </div>
+
+  <!-- Health history -->
+  <div class="bg-white border border-slate-200 rounded-2xl p-6">
+    <h2 class="font-semibold text-slate-900 mb-4">Health history</h2>
+    {% if history %}
+      <ul class="space-y-2 text-sm">
+        {% for entry in history %}
+        <li class="flex gap-2">
+          <span class="shrink-0 mt-0.5 text-xs px-2 py-0.5 rounded-full bg-brand-50 text-brand-700">{{ entry.get_kind_display }}</span>
+          <span class="text-slate-600">{{ entry.summary }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-sm text-slate-400">No history recorded yet.</p>
+    {% endif %}
+  </div>
+</div>
 {% endblock %}

@@ -33,6 +33,9 @@ urlpatterns = [
     path("api/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
     # ---- Server-rendered pages (Django + HTMX) ----
     path("accounts/", include("apps.accounts.urls", namespace="accounts")),
+    path("fitness/", include("apps.fitness.urls", namespace="fitness")),
+    path("coach/", include("apps.coach.urls", namespace="coach")),
+    path("consultations/", include("apps.consultations.urls", namespace="consultations")),
     path("", RedirectView.as_view(pattern_name="accounts:dashboard"), name="home"),
 ]
 
