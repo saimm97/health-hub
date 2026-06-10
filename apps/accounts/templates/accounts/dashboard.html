@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · HealthHub{% endblock %}
+{% block content %}
+<h1>Welcome{% if user.full_name %}, {{ user.full_name }}{% endif %}</h1>
+
+<section>
+    <h2>Your profile</h2>
+    <ul>
+        <li>Role: {{ user.get_role_display }}</li>
+        <li>Age: {{ profile.age|default:"—" }}</li>
+        <li>Activity: {{ profile.get_activity_level_display }}</li>
+        <li>Goal: {{ profile.goal|default:"—" }}</li>
+    </ul>
+</section>
+
+<section>
+    <h2>Recent health history</h2>
+    {% if history %}
+        <ul>
+        {% for entry in history %}
+            <li>{{ entry.get_kind_display }}: {{ entry.summary }}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No history recorded yet.</p>
+    {% endif %}
+</section>
+{% endblock %}

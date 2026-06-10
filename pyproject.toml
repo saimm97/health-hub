@@ -1,0 +1,28 @@
+[project]
+name = "healthhub"
+version = "1.0.0"
+description = "AI fitness & wellness coach with a doctor-connection layer."
+requires-python = ">=3.12"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["migrations"]
+
+[tool.ruff.lint]
+# pyflakes, pycodestyle, isort, bugbear, comprehensions, pyupgrade, django
+select = ["F", "E", "W", "I", "B", "C4", "UP", "DJ"]
+ignore = ["E501"]  # line length handled by formatter
+
+[tool.ruff.lint.isort]
+known-first-party = ["apps", "config"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings.test"
+python_files = ["test_*.py", "tests.py"]
+addopts = "-q --reuse-db"
+testpaths = ["apps"]
+
+[tool.coverage.run]
+source = ["apps"]
+omit = ["*/migrations/*", "*/tests/*"]

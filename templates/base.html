@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}HealthHub{% endblock %}</title>
+    <!-- HTMX for progressive interactivity; design/styles arrive in the design phase. -->
+    <script src="https://unpkg.com/htmx.org@2.0.3" defer></script>
+</head>
+<body>
+    <header>
+        <strong>HealthHub</strong>
+        {% if user.is_authenticated %}
+            <span>{{ user.email }}</span>
+            <a href="{% url 'accounts:logout' %}">Log out</a>
+        {% endif %}
+    </header>
+    <main>
+        {% if messages %}
+            <ul>{% for m in messages %}<li>{{ m }}</li>{% endfor %}</ul>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
