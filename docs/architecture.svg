@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 640" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <defs>
+    <marker id="ah" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6" fill="none" stroke="#94a3b8" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <rect x="0.5" y="0.5" width="899" height="639" rx="14" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="28" y="36" font-size="16" font-weight="600" fill="#0f172a">HealthHub — system architecture</text>
+
+  <!-- section labels -->
+  <text x="28" y="98" font-size="11" letter-spacing="0.5" fill="#94a3b8">CLIENTS</text>
+  <text x="28" y="190" font-size="11" letter-spacing="0.5" fill="#94a3b8">GATEWAY</text>
+  <text x="28" y="312" font-size="11" letter-spacing="0.5" fill="#94a3b8">FEATURE APPS</text>
+  <text x="28" y="474" font-size="11" letter-spacing="0.5" fill="#94a3b8">AI PIPELINE</text>
+  <text x="28" y="588" font-size="11" letter-spacing="0.5" fill="#94a3b8">DATA &amp; INFRA</text>
+
+  <!-- Row 1: clients -->
+  <g>
+    <rect x="160" y="66" width="220" height="54" rx="8" fill="#eef2f6" stroke="#cbd5e1"/>
+    <text x="270" y="90" text-anchor="middle" font-size="14" fill="#334155">Django + HTMX</text>
+    <text x="270" y="107" text-anchor="middle" font-size="11" fill="#64748b">server-rendered</text>
+    <rect x="410" y="66" width="220" height="54" rx="8" fill="#eef2f6" stroke="#cbd5e1"/>
+    <text x="520" y="90" text-anchor="middle" font-size="14" fill="#334155">Next.js SPA</text>
+    <text x="520" y="107" text-anchor="middle" font-size="11" fill="#64748b">API client</text>
+    <rect x="660" y="66" width="220" height="54" rx="8" fill="#eef2f6" stroke="#cbd5e1"/>
+    <text x="770" y="90" text-anchor="middle" font-size="14" fill="#334155">Django admin</text>
+    <text x="770" y="107" text-anchor="middle" font-size="11" fill="#64748b">staff back-office</text>
+  </g>
+
+  <!-- Row 2: gateway -->
+  <g>
+    <rect x="160" y="158" width="330" height="54" rx="8" fill="#dbeafe" stroke="#93c5fd"/>
+    <text x="325" y="182" text-anchor="middle" font-size="14" fill="#1e40af">Template views</text>
+    <text x="325" y="199" text-anchor="middle" font-size="11" fill="#3b82f6">HTMX partials</text>
+    <rect x="550" y="158" width="330" height="54" rx="8" fill="#dbeafe" stroke="#93c5fd"/>
+    <text x="715" y="182" text-anchor="middle" font-size="14" fill="#1e40af">DRF REST API</text>
+    <text x="715" y="199" text-anchor="middle" font-size="11" fill="#3b82f6">/api/v1 · JWT</text>
+  </g>
+
+  <!-- Row 3: service layer -->
+  <rect x="160" y="235" width="720" height="150" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="176" y="256" font-size="11" fill="#64748b">service layer (apps/*/services.py)</text>
+  <g>
+    <rect x="180" y="268" width="213" height="48" rx="8" fill="#d1fae5" stroke="#6ee7b7"/>
+    <text x="287" y="288" text-anchor="middle" font-size="14" fill="#065f46">accounts</text>
+    <text x="287" y="304" text-anchor="middle" font-size="11" fill="#059669">profile · history</text>
+    <rect x="413" y="268" width="213" height="48" rx="8" fill="#d1fae5" stroke="#6ee7b7"/>
+    <text x="520" y="288" text-anchor="middle" font-size="14" fill="#065f46">fitness</text>
+    <text x="520" y="304" text-anchor="middle" font-size="11" fill="#059669">workouts · readings</text>
+    <rect x="646" y="268" width="213" height="48" rx="8" fill="#d1fae5" stroke="#6ee7b7"/>
+    <text x="753" y="288" text-anchor="middle" font-size="14" fill="#065f46">nutrition</text>
+    <text x="753" y="304" text-anchor="middle" font-size="11" fill="#059669">diet · meals</text>
+
+    <rect x="180" y="326" width="213" height="48" rx="8" fill="#ccfbf1" stroke="#5eead4"/>
+    <text x="287" y="346" text-anchor="middle" font-size="14" fill="#115e59">coach</text>
+    <text x="287" y="362" text-anchor="middle" font-size="11" fill="#0d9488">AI chat + plans</text>
+    <rect x="413" y="326" width="213" height="48" rx="8" fill="#d1fae5" stroke="#6ee7b7"/>
+    <text x="520" y="346" text-anchor="middle" font-size="14" fill="#065f46">consultations</text>
+    <text x="520" y="362" text-anchor="middle" font-size="11" fill="#059669">doctors · booking</text>
+    <rect x="646" y="326" width="213" height="48" rx="8" fill="#d1fae5" stroke="#6ee7b7"/>
+    <text x="753" y="346" text-anchor="middle" font-size="14" fill="#065f46">billing</text>
+    <text x="753" y="362" text-anchor="middle" font-size="11" fill="#059669">Stripe-ready</text>
+  </g>
+
+  <!-- Row 4: AI pipeline -->
+  <rect x="160" y="410" width="720" height="120" rx="10" fill="#f0fdfa" stroke="#99f6e4"/>
+  <text x="176" y="431" font-size="11" fill="#0d9488">guardrail-first AI pipeline</text>
+  <g>
+    <rect x="170" y="446" width="200" height="54" rx="8" fill="#ccfbf1" stroke="#5eead4"/>
+    <text x="270" y="470" text-anchor="middle" font-size="14" fill="#115e59">Safety guardrail</text>
+    <text x="270" y="487" text-anchor="middle" font-size="11" fill="#0d9488">blocks medical Qs</text>
+    <rect x="420" y="446" width="200" height="54" rx="8" fill="#ccfbf1" stroke="#5eead4"/>
+    <text x="520" y="470" text-anchor="middle" font-size="14" fill="#115e59">Prompt builder</text>
+    <text x="520" y="487" text-anchor="middle" font-size="11" fill="#0d9488">grounds on user data</text>
+    <rect x="670" y="446" width="200" height="54" rx="8" fill="#ccfbf1" stroke="#5eead4"/>
+    <text x="770" y="470" text-anchor="middle" font-size="14" fill="#115e59">LLM provider</text>
+    <text x="770" y="487" text-anchor="middle" font-size="11" fill="#0d9488">Claude / GPT / stub</text>
+  </g>
+
+  <!-- Row 5: infra -->
+  <g>
+    <rect x="160" y="556" width="165" height="54" rx="8" fill="#fef3c7" stroke="#fcd34d"/>
+    <text x="242" y="580" text-anchor="middle" font-size="14" fill="#92400e">PostgreSQL</text>
+    <text x="242" y="597" text-anchor="middle" font-size="11" fill="#b45309">all app data</text>
+    <rect x="345" y="556" width="165" height="54" rx="8" fill="#fef3c7" stroke="#fcd34d"/>
+    <text x="427" y="580" text-anchor="middle" font-size="14" fill="#92400e">Redis</text>
+    <text x="427" y="597" text-anchor="middle" font-size="11" fill="#b45309">broker · cache</text>
+    <rect x="530" y="556" width="165" height="54" rx="8" fill="#fef3c7" stroke="#fcd34d"/>
+    <text x="612" y="580" text-anchor="middle" font-size="14" fill="#92400e">Celery</text>
+    <text x="612" y="597" text-anchor="middle" font-size="11" fill="#b45309">async jobs</text>
+    <rect x="715" y="556" width="165" height="54" rx="8" fill="#fef3c7" stroke="#fcd34d"/>
+    <text x="797" y="580" text-anchor="middle" font-size="14" fill="#92400e">External APIs</text>
+    <text x="797" y="597" text-anchor="middle" font-size="11" fill="#b45309">email · payments</text>
+  </g>
+
+  <!-- arrows -->
+  <g stroke="#94a3b8" stroke-width="1.5" fill="none">
+    <path d="M270,120 L294,155" marker-end="url(#ah)"/>
+    <path d="M520,120 L656,155" marker-end="url(#ah)"/>
+    <path d="M770,120 L520,134 L520,232" marker-end="url(#ah)"/>
+    <path d="M325,212 L325,232" marker-end="url(#ah)"/>
+    <path d="M715,212 L715,232" marker-end="url(#ah)"/>
+    <path d="M270,374 L270,407" marker-end="url(#ah)"/>
+    <path d="M312,408 L312,377" marker-end="url(#ah)" stroke-dasharray="4 3"/>
+    <path d="M370,473 L416,473" marker-end="url(#ah)"/>
+    <path d="M620,473 L666,473" marker-end="url(#ah)"/>
+    <path d="M242,530 L242,553" marker-end="url(#ah)"/>
+    <path d="M427,530 L427,553" marker-end="url(#ah)"/>
+    <path d="M612,530 L612,553" marker-end="url(#ah)"/>
+    <path d="M770,500 L797,553" marker-end="url(#ah)"/>
+  </g>
+  <text x="262" y="395" text-anchor="end" font-size="10" fill="#94a3b8">message</text>
+  <text x="320" y="395" text-anchor="start" font-size="10" fill="#94a3b8">safe reply</text>
+  <text x="528" y="150" text-anchor="start" font-size="10" fill="#94a3b8">ORM</text>
+</svg>
