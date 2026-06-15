@@ -4,7 +4,7 @@
 > safety guardrails real health software needs.
 
 HealthHub is a Django platform where users track their fitness, nutrition and
-health readings, get **personalised, data-grounded coaching from an LLM**, and
+health readings, get **AI coaching** (with an LLM integration seam you wire up), and
 **book consultations** with health professionals. The headline engineering idea
 is a **guardrail-first AI pipeline**: every message is screened *before* it
 reaches the model, so the coach stays in the fitness/wellness lane and refuses
@@ -39,10 +39,10 @@ to show the *responsible* version:
 
 - **Guardrail before the model.** A transparent, auditable safety classifier
   blocks medical, emergency and mental-health-crisis messages and never lets
-  them reach the LLM. Every blocked turn is recorded for audit.
-- **Grounded, not hallucinated.** The prompt builder injects the user's real
-  profile and recent activity so advice is based on their data.
-- **Provider-agnostic.** Anthropic, OpenAI or a local stub behind one interface.
+  them reach any LLM. Every blocked turn is recorded for audit.
+- **A clean integration seam.** The coach pipeline (guardrail + persistence) is
+  in place, with a clearly marked spot to plug in an LLM provider. The LLM
+  integration itself is intentionally left to the developer.
 
 ---
 
@@ -50,7 +50,8 @@ to show the *responsible* version:
 
 One backend serves two frontends. Business logic lives in a **service layer**
 that both the Django template views and the DRF API call — written once, no
-drift. The AI coach runs as a three-stage, guardrail-first pipeline.
+drift. The AI coach runs as a guardrail-first pipeline with a clear seam for
+plugging in an LLM provider.
 
 ![HealthHub architecture](docs/architecture.svg)
 
@@ -61,7 +62,7 @@ drift. The AI coach runs as a three-stage, guardrail-first pipeline.
 | **Clients** | Django + HTMX (server-rendered) · Next.js SPA · Django admin |
 | **Gateway** | Template views · DRF REST API at `/api/v1/` (JWT + session auth) |
 | **Feature apps** | `accounts` · `fitness` · `nutrition` · `coach` · `consultations` · `billing` |
-| **AI pipeline** | safety guardrail → prompt builder → LLM provider (pluggable) |
+| **AI pipeline** | safety guardrail → (LLM integration seam — left to the developer) |
 | **Data & infra** | PostgreSQL · Redis · Celery workers · external APIs (email, Stripe) |
 
 ### Key design decisions
@@ -186,8 +187,8 @@ healthhub/
 │   ├── accounts/            # custom User, profile, health history
 │   ├── fitness/             # exercises, routines, workout logs, readings
 │   ├── nutrition/           # foods, meal logs, diet plans
-│   ├── coach/               # AI coach + guardrail→prompt→provider pipeline
-│   │   └── services/        # guardrail.py · prompts.py · providers.py · coach.py
+│   ├── coach/               # AI coach: guardrail + orchestrator (LLM seam)
+│   │   └── services/        # guardrail.py · coach.py
 │   ├── consultations/       # doctors, availability, bookings, messaging
 │   ├── billing/             # plans, subscriptions, payments (Stripe-ready)
 │   └── notifications/       # async email task
@@ -256,24 +257,18 @@ Notable settings:
 | Variable | Purpose |
 |----------|---------|
 | `DATABASE_URL` | Unset → SQLite. Set to a `postgres://…` URL for PostgreSQL. |
-| `LLM_PROVIDER` | `stub` (default, no key) · `anthropic` · `openai` |
-| `LLM_API_KEY` / `LLM_MODEL` | Credentials for the chosen LLM provider |
 | `CELERY_BROKER_URL` | Redis URL for Celery |
 | `STRIPE_*` | Stripe keys (used once billing is wired up) |
 
-### Using the AI coach
+### The AI coach
 
-With `LLM_PROVIDER=stub` the coach returns deterministic replies (no API key
-needed). To use a real model, set in `.env`:
+The coach pipeline (safety guardrail + conversation persistence) is implemented,
+but **no LLM is integrated** — that's left to you. Until you wire one in, the
+coach returns a placeholder reply for non-blocked messages. The integration seam
+is clearly marked in [`apps/coach/services/coach.py`](apps/coach/services/coach.py).
 
-```bash
-LLM_PROVIDER=anthropic        # or openai
-LLM_API_KEY=sk-...
-LLM_MODEL=claude-fable-5
-```
-
-The guardrail runs regardless of provider — ask the coach a medical question and
-watch it refuse and redirect to a consultation.
+The guardrail runs regardless — ask the coach a medical question and watch it
+refuse and redirect to a consultation, before any model would ever be called.
 
 ---
 

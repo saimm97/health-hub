@@ -211,15 +211,6 @@ CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = TIME_ZONE
 
 # ---------------------------------------------------------------------------
-# AI coach / LLM provider
-# ---------------------------------------------------------------------------
-# Provider-agnostic: the coach service reads these and picks an adapter.
-LLM_PROVIDER = env("LLM_PROVIDER", default="stub")  # stub | anthropic | openai
-LLM_MODEL = env("LLM_MODEL", default="claude-fable-5")
-LLM_API_KEY = env("LLM_API_KEY", default="")
-LLM_MAX_TOKENS = env.int("LLM_MAX_TOKENS", default=1024)
-
-# ---------------------------------------------------------------------------
 # Payments
 # ---------------------------------------------------------------------------
 STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY", default="")

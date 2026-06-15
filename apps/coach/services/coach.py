@@ -1,8 +1,11 @@
 """
-Coach orchestrator — ties the pipeline together:
+Coach orchestrator.
 
     user message ──▶ guardrail ──▶ (blocked? safe reply)
-                                └▶ prompt builder ──▶ LLM provider ──▶ reply
+                                └▶ [ your LLM integration goes here ]
+
+The guardrail and persistence are in place; the actual LLM call is intentionally
+NOT implemented — wire in your own provider where marked below.
 
 Everything is persisted (including blocked turns) for an auditable history.
 """
@@ -13,21 +16,13 @@ from django.db import transaction
 from apps.accounts.models import User
 from apps.coach.models import Conversation, Message
 
-from . import guardrail, prompts
-from .providers import get_provider
+from . import guardrail
 
-# How many prior turns to include as context.
-_HISTORY_LIMIT = 10
-
-
-def _history_payload(conversation: Conversation) -> list[dict]:
-    turns = (
-        conversation.messages.filter(role__in=[Message.Role.USER, Message.Role.ASSISTANT])
-        .exclude(was_blocked=True)
-        .order_by("-created")[:_HISTORY_LIMIT]
-    )
-    # Re-order oldest-first for the model.
-    return [{"role": m.role, "content": m.content} for m in reversed(list(turns))]
+# Shown until an LLM provider is integrated (see TODO in ``send_message``).
+_NOT_CONFIGURED_REPLY = (
+    "The AI coach isn't connected to a language model yet. "
+    "Integrate your LLM provider in apps/coach/services/coach.py."
+)
 
 
 @transaction.atomic
@@ -53,10 +48,10 @@ def send_message(*, user: User, conversation: Conversation, text: str) -> Messag
             block_reason=verdict.reason,
         )
 
-    # 3. Build a grounded prompt and call the provider.
-    history = _history_payload(conversation)
-    messages = prompts.build_messages(user, history, text)
-    reply_text = get_provider().complete(messages)
+    # 3. TODO: integrate your LLM provider here.
+    #    Build your prompt/context from `user` and the conversation history,
+    #    call your model, and use its response as `reply_text`.
+    reply_text = _NOT_CONFIGURED_REPLY
 
     # 4. Persist and return the assistant's reply.
     return Message.objects.create(
